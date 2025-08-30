@@ -414,7 +414,7 @@ async def get_daily_summary(user_id: str, date_filter: Optional[str] = None):
                 "calories": max(0, user.get('daily_calorie_target', 2000) - total_calories)
             },
             "meals": meals,
-            "entries_count": len(entries)
+            "entries_count": len(processed_entries)
         }
         
     except Exception as e:

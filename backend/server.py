@@ -519,8 +519,20 @@ async def generate_meal_plan(user_id: str, target_date: str):
 async def get_meal_plans(user_id: str):
     """Get meal plans for a user"""
     try:
-        meal_plans = await db.meal_plans.find({"user_id": user_id}).sort("plan_date", -1).to_list(30)
-        return [MealPlan(**plan) for plan in meal_plans]
+        meal_plans_cursor = db.meal_plans.find({"user_id": user_id}).sort("date", -1)
+        meal_plans_raw = await meal_plans_cursor.to_list(30)
+        
+        # Process meal plans to remove ObjectId and handle field names
+        meal_plans = []
+        for plan in meal_plans_raw:
+            if '_id' in plan:
+                del plan['_id']
+            # Ensure date field is present for Pydantic validation
+            if 'date' not in plan and 'plan_date' in plan:
+                plan['date'] = plan['plan_date']
+            meal_plans.append(MealPlan(**plan))
+        
+        return meal_plans
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to get meal plans: {str(e)}")
 

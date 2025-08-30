@@ -476,18 +476,20 @@ async def generate_meal_plan(user_id: str, target_date: str):
             meal_plan_data = json.loads(json_str)
             
             # Create meal plan object
-            meal_plan = MealPlan(
-                user_id=user_id,
-                plan_date=target_date,
-                breakfast=meal_plan_data.get('breakfast', []),
-                lunch=meal_plan_data.get('lunch', []),
-                dinner=meal_plan_data.get('dinner', []),
-                snacks=meal_plan_data.get('snacks', []),
-                total_calories=meal_plan_data.get('total_calories', 0),
-                total_protein=meal_plan_data.get('total_protein', 0),
-                total_carbs=meal_plan_data.get('total_carbs', 0),
-                total_fat=meal_plan_data.get('total_fat', 0)
-            )
+            meal_plan_dict = {
+                "user_id": user_id,
+                "date": target_date,
+                "breakfast": meal_plan_data.get('breakfast', []),
+                "lunch": meal_plan_data.get('lunch', []),
+                "dinner": meal_plan_data.get('dinner', []),
+                "snacks": meal_plan_data.get('snacks', []),
+                "total_calories": meal_plan_data.get('total_calories', 0),
+                "total_protein": meal_plan_data.get('total_protein', 0),
+                "total_carbs": meal_plan_data.get('total_carbs', 0),
+                "total_fat": meal_plan_data.get('total_fat', 0)
+            }
+            
+            meal_plan = MealPlan(**meal_plan_dict)
             
             # Save to database
             await db.meal_plans.insert_one(meal_plan.dict())

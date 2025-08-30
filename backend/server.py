@@ -478,7 +478,7 @@ async def generate_meal_plan(user_id: str, target_date: str):
             # Create meal plan object
             meal_plan = MealPlan(
                 user_id=user_id,
-                plan_date=datetime.strptime(target_date, "%Y-%m-%d").date(),
+                plan_date=target_date,
                 breakfast=meal_plan_data.get('breakfast', []),
                 lunch=meal_plan_data.get('lunch', []),
                 dinner=meal_plan_data.get('dinner', []),

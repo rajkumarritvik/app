@@ -367,7 +367,7 @@ async def get_daily_summary(user_id: str, date_filter: Optional[str] = None):
         # Get food entries for the day
         entries = await db.food_entries.find({
             "user_id": user_id,
-            "date": date_filter
+            "entry_date": date_filter
         }).to_list(100)
         
         # Calculate totals

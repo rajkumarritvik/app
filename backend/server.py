@@ -344,7 +344,7 @@ async def get_user_food_entries(user_id: str, date_filter: Optional[str] = None)
             # Parse date and filter
             from datetime import datetime
             target_date = datetime.strptime(date_filter, "%Y-%m-%d").date()
-            query["date"] = target_date.isoformat()
+            query["entry_date"] = target_date.isoformat()
         
         entries = await db.food_entries.find(query).sort("created_at", -1).to_list(100)
         return [FoodEntry(**entry) for entry in entries]

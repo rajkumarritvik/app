@@ -70,7 +70,7 @@ class FoodEntry(BaseModel):
     meal_type: str  # breakfast, lunch, dinner, snack
     image_base64: Optional[str] = None
     analysis_details: Optional[Dict[str, Any]] = None
-    entry_date: date = Field(default_factory=date.today, alias="date")
+    entry_date: str = Field(default_factory=lambda: date.today().isoformat())
     created_at: datetime = Field(default_factory=datetime.utcnow)
 
 class MealPlan(BaseModel):

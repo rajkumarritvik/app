@@ -76,7 +76,7 @@ class FoodEntry(BaseModel):
 class MealPlan(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
     user_id: str
-    plan_date: date = Field(alias="date")
+    plan_date: str = Field(alias="date")
     breakfast: List[Dict[str, Any]] = []
     lunch: List[Dict[str, Any]] = []
     dinner: List[Dict[str, Any]] = []

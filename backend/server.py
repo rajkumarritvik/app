@@ -365,10 +365,19 @@ async def get_daily_summary(user_id: str, date_filter: Optional[str] = None):
             raise HTTPException(status_code=404, detail="User not found")
         
         # Get food entries for the day
-        entries = await db.food_entries.find({
+        entries_cursor = db.food_entries.find({
             "user_id": user_id,
             "entry_date": date_filter
-        }).to_list(100)
+        })
+        entries = await entries_cursor.to_list(100)
+        
+        # Convert MongoDB documents to proper format
+        processed_entries = []
+        for entry in entries:
+            # Remove MongoDB ObjectId
+            if '_id' in entry:
+                del entry['_id']
+            processed_entries.append(entry)
         
         # Calculate totals
         total_calories = sum(entry.get('calories', 0) for entry in entries)

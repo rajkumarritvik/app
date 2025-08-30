@@ -380,11 +380,11 @@ async def get_daily_summary(user_id: str, date_filter: Optional[str] = None):
             processed_entries.append(entry)
         
         # Calculate totals
-        total_calories = sum(entry.get('calories', 0) for entry in entries)
-        total_protein = sum(entry.get('protein', 0) for entry in entries)
-        total_carbs = sum(entry.get('carbs', 0) for entry in entries)
-        total_fat = sum(entry.get('fat', 0) for entry in entries)
-        total_fiber = sum(entry.get('fiber', 0) for entry in entries)
+        total_calories = sum(entry.get('calories', 0) for entry in processed_entries)
+        total_protein = sum(entry.get('protein', 0) for entry in processed_entries)
+        total_carbs = sum(entry.get('carbs', 0) for entry in processed_entries)
+        total_fat = sum(entry.get('fat', 0) for entry in processed_entries)
+        total_fiber = sum(entry.get('fiber', 0) for entry in processed_entries)
         
         # Group by meal type
         meals = {
@@ -394,7 +394,7 @@ async def get_daily_summary(user_id: str, date_filter: Optional[str] = None):
             'snack': []
         }
         
-        for entry in entries:
+        for entry in processed_entries:
             meal_type = entry.get('meal_type', 'snack')
             if meal_type in meals:
                 meals[meal_type].append(entry)
